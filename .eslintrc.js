@@ -11,8 +11,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint',
     'prettier',
     'prettier/@typescript-eslint',
   ],
@@ -60,7 +59,6 @@ module.exports = {
     ], // Incompatible with prettier
     'object-curly-newline': 'off', // Incompatible with prettier
     'function-paren-newline': 'off', // Incompatible with prettier
-    'vue/no-unused-components': 'off',
     'import/prefer-default-export': 'off',
     'linebreak-style': 'off',
   },
