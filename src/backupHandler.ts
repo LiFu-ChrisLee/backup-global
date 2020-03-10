@@ -29,7 +29,7 @@ function wFile(data: string): void {
   });
 }
 
-function backupHandler(): void {
+function backupHandler(args: any): void {
   const getPackageSpinner = ora('Getting global packages ...');
   getPackageSpinner.start('');
 

@@ -27,7 +27,7 @@ function installPackages(data: string): void {
   });
 }
 
-function installHandler(): void {
+function installHandler(args: any): void {
   const readSpinner = ora('Reading backup file ...');
   readSpinner.start('');
 

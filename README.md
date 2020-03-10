@@ -39,6 +39,10 @@ backup-global install
 
 Use ~/npm.global.txt to install your backup
 
+## Change Logs
+
+Add version control
+
 ## License
 
 This project is licensed under the MIT License
