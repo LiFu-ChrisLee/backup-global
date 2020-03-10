@@ -27,4 +27,3 @@ commander_1.default.parse(process.argv);
 if (!process.argv.slice(2).length) {
     commander_1.default.outputHelp();
 }
-//# sourceMappingURL=index.js.map

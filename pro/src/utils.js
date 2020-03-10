@@ -5,4 +5,3 @@ function getUserDir() {
     return process.env[dirEnv];
 }
 exports.getUserDir = getUserDir;
-//# sourceMappingURL=utils.js.map
