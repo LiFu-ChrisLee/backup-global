@@ -3,6 +3,8 @@
 import backCmd from 'commander';
 
 import colors from 'colors';
+import { BackOptionsDto } from './dtos/BackOptions.dto';
+import { soloConsole } from './src/utils';
 import program from './package.json';
 import { backupHandler } from './src/backupHandler.js';
 import { installHandler } from './src/installHandler.js';
@@ -14,9 +16,9 @@ backCmd
   .alias('b')
   .option('-n --no-version', 'backup package with version')
   .description('backup your global packages')
-  .action(options => {
-    // console.log(options.version);
-    backupHandler({ version: options.version });
+  .action(agrvs => {
+    const options: BackOptionsDto = { needVersion: agrvs.version };
+    backupHandler(options);
   });
 
 backCmd
@@ -32,11 +34,10 @@ backCmd.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
   backCmd.outputHelp();
-  console.log();
-  console.log(
+
+  soloConsole.log(
     `You can run ${colors.yellow('bkg <command> -h')} or ${colors.yellow(
       'backup-global <command> --help',
     )} for help.`,
   );
-  console.log();
 }

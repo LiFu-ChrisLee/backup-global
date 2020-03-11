@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "removeComments": true,
-    "target": "es5",
+    "target": "es6",
     "outDir": "./pro",
     "baseUrl": "./",
     "incremental": true,

@@ -62,5 +62,7 @@ module.exports = {
     'function-paren-newline': 'off', // Incompatible with prettier
     'import/prefer-default-export': 'off',
     'linebreak-style': 'off',
+    'no-useless-constructor': 0,
+    'class-methods-use-this': 0
   },
 };
