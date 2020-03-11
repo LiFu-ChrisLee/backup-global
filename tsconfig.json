@@ -7,8 +7,9 @@
     "baseUrl": "./",
     "incremental": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["."],
+  "include": ["./"],
   "exclude": ["node_modules", "dist", "pro"]
 }

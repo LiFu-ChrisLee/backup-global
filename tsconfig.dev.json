@@ -3,14 +3,15 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["."],
+  "include": ["./"],
   "exclude": ["node_modules", "dist", "pro"]
 }
