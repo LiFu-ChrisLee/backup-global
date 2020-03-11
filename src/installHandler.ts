@@ -1,48 +1,24 @@
-import fs from 'fs';
 import path from 'path';
-import cmd from 'node-cmd';
-import ora from 'ora';
-import { getUserDir } from './utils';
+import colors from 'colors';
+import { getUserDir, rFile, soloConsole } from '@/utils';
+import { InstallOptionsDto } from '@dto/Options.dto';
+import { InstallPackages } from './installCls/InstallPackages';
 
-function installPackages(data: string): void {
-  const installSpinner = ora('Installing packages ...');
-  installSpinner.start('');
-
-  const packages: string[] = data.split('\n');
-
-  cmd.get(`npm install --global ${packages.join(' ')}`, (err, res: string, stderr) => {
-    if (res) {
-      installSpinner.succeed('');
-
-      console.log(res);
-    } else if (stderr) {
-      installSpinner.fail('');
-
-      console.log('std error: ', stderr);
-    } else {
-      installSpinner.fail('');
-
-      console.log('cmd error: ', err);
-    }
-  });
-}
-
-function installHandler(): void {
-  const readSpinner = ora('Reading backup file ...');
-  readSpinner.start('');
-
+function installHandler(args: InstallOptionsDto): void {
   const backupFile: string = path.join(getUserDir(), 'npm.global.txt');
-  fs.readFile(backupFile, (rFileErr, data) => {
-    if (rFileErr) {
-      readSpinner.fail('');
 
-      console.error('Reading file error: ', rFileErr);
-    } else {
-      readSpinner.succeed('');
+  rFile(backupFile)
+    .then(text => {
+      const isp = new InstallPackages(text, args.needVersion);
 
-      installPackages(data.toString());
-    }
-  });
+      return isp.installFullPackages();
+    })
+    .then(data => {
+      soloConsole.success(colors.white(data));
+    })
+    .catch(e => {
+      soloConsole.error(e);
+    });
 }
 
 export { installHandler };

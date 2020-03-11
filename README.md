@@ -39,6 +39,44 @@ backup-global install
 
 Use ~/npm.global.txt to install your backup
 
+## Change Logs
+
+### 1.1.0
+Add version control
+
+#### backup
+
+Default option is backup packages with version
+
+Use these command to backup packages without version
+
+```bash
+bkg b -n
+```
+
+or
+
+```bash
+backup-global backup --no-version
+```
+
+#### install
+
+Default option is install packages with version
+
+Use these command to install packages without version
+
+```bash
+bkg i -n
+```
+
+or
+
+```bash
+backup-global install --no-version
+```
+
+
 ## License
 
 This project is licensed under the MIT License

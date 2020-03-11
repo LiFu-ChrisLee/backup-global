@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "removeComments": true,
+    "target": "es6",
+    "baseUrl": "./",
+    "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@dto/*": [
+        "./dtos/*"
+      ]
+    },
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      }
+    ]
+  },
+  "include": [
+    "./"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "pro"
+  ]
+}
