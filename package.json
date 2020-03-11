@@ -1,6 +1,6 @@
 {
   "name": "backup-global",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backup your global packages.",
   "scripts": {
     "dev": "tsc -p tsconfig.dev.json",
