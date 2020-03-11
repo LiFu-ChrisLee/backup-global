@@ -1,35 +1,20 @@
-import fs from 'fs';
 import path from 'path';
 import colors from 'colors';
-import { BackOptionsDto } from '../dtos/BackOptions.dto';
-import { getUserDir, spinner, soloConsole } from './utils';
-import { BackupPackages } from './backupCls/BackupPackages';
-
-function wFile(pkgs: string[]): void {
-  spinner.start('Writing backup file ...');
-
-  const backupFile: string = path.join(getUserDir(), 'npm.global.txt');
-
-  fs.writeFile(backupFile, pkgs.join('\n'), wFileErr => {
-    if (wFileErr) {
-      spinner.fail();
-
-      soloConsole.error(wFileErr);
-    } else {
-      spinner.stop();
-
-      soloConsole.log(`${colors.bgGreen('Backup file:')} ${backupFile}`);
-    }
-  });
-}
+import { BackOptionsDto } from '@dto/Options.dto';
+import { getUserDir, soloConsole, wFile } from '@/utils';
+import { BackupPackages } from '@/backupCls/BackupPackages';
 
 function backupHandler(args: BackOptionsDto): void {
   const bkp = new BackupPackages(args.needVersion);
+  const backupFile: string = path.join(getUserDir(), 'npm.global.txt');
 
   bkp
     .getFullPackages()
     .then(pkgs => {
-      wFile(pkgs);
+      return wFile(backupFile, pkgs.join('\n'));
+    })
+    .then(() => {
+      soloConsole.success(`Backup file: ${colors.blue(backupFile)}`);
     })
     .catch(e => {
       soloConsole.error(e);

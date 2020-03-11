@@ -13,7 +13,6 @@
       ],
       "program": "${workspaceFolder}/dist/index.js",
       "args": [
-        "b"
       ],
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"

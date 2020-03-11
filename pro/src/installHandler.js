@@ -3,43 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_1 = __importDefault(require("fs"));
-var path_1 = __importDefault(require("path"));
-var node_cmd_1 = __importDefault(require("node-cmd"));
-var ora_1 = __importDefault(require("ora"));
-var utils_1 = require("./utils");
-function installPackages(data) {
-    var installSpinner = ora_1.default('Installing packages ...');
-    installSpinner.start('');
-    var packages = data.split('\n');
-    node_cmd_1.default.get("npm install --global " + packages.join(' '), function (err, res, stderr) {
-        if (res) {
-            installSpinner.succeed('');
-            console.log(res);
-        }
-        else if (stderr) {
-            installSpinner.fail('');
-            console.log('std error: ', stderr);
-        }
-        else {
-            installSpinner.fail('');
-            console.log('cmd error: ', err);
-        }
-    });
-}
-function installHandler() {
-    var readSpinner = ora_1.default('Reading backup file ...');
-    readSpinner.start('');
-    var backupFile = path_1.default.join(utils_1.getUserDir(), 'npm.global.txt');
-    fs_1.default.readFile(backupFile, function (rFileErr, data) {
-        if (rFileErr) {
-            readSpinner.fail('');
-            console.error('Reading file error: ', rFileErr);
-        }
-        else {
-            readSpinner.succeed('');
-            installPackages(data.toString());
-        }
+const path_1 = __importDefault(require("path"));
+const colors_1 = __importDefault(require("colors"));
+const utils_1 = require("./utils");
+const InstallPackages_1 = require("./installCls/InstallPackages");
+function installHandler(args) {
+    const backupFile = path_1.default.join(utils_1.getUserDir(), 'npm.global.txt');
+    utils_1.rFile(backupFile)
+        .then(text => {
+        const isp = new InstallPackages_1.InstallPackages(text, args.needVersion);
+        return isp.installFullPackages();
+    })
+        .then(data => {
+        utils_1.soloConsole.success(colors_1.default.white(data));
+    })
+        .catch(e => {
+        utils_1.soloConsole.error(e);
     });
 }
 exports.installHandler = installHandler;

@@ -3,11 +3,12 @@
 import backCmd from 'commander';
 
 import colors from 'colors';
-import { BackOptionsDto } from './dtos/BackOptions.dto';
-import { soloConsole } from './src/utils';
+
+import { soloConsole } from '@/utils';
+import { backupHandler } from '@/backupHandler';
+import { installHandler } from '@/installHandler';
+import { BackOptionsDto, InstallOptionsDto } from '@dto/Options.dto';
 import program from './package.json';
-import { backupHandler } from './src/backupHandler.js';
-import { installHandler } from './src/installHandler.js';
 
 backCmd.version(program.version).name('backup-global|bkg');
 
@@ -26,8 +27,9 @@ backCmd
   .alias('i')
   .description('install your backup')
   .option('-n --no-version', 'install package with version')
-  .action(options => {
-    installHandler({ version: options.version });
+  .action(agrvs => {
+    const options: InstallOptionsDto = { needVersion: agrvs.version };
+    installHandler(options);
   });
 
 backCmd.parse(process.argv);

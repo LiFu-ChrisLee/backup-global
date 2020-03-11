@@ -4,10 +4,12 @@
   "preRelease": true,
   "description": "Backup your global packages.",
   "scripts": {
-    "dev": "tsc -p tsconfig.dev.json --watch",
-    "build": "tsc",
+    "dev": "ttsc -p tsconfig.dev.json --w",
+    "build": "ttsc",
     "start": "node pro/index.js",
-    "dev:start": "node dist/index.js"
+    "dev:start": "node dist/index.js",
+    "release": "npm run build && npm publish",
+    "prerelease": "npm run build && npm publish --tag test"
   },
   "engines": {
     "node": ">= 8.9.0",
@@ -44,7 +46,9 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1",
-    "typescript": "^3.8.3"
+    "ttypescript": "^1.5.10",
+    "typescript": "^3.8.3",
+    "typescript-transform-paths": "^1.1.14"
   },
   "dependencies": {
     "colors": "^1.4.0",

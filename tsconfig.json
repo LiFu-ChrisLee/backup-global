@@ -1,15 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "removeComments": true,
-    "target": "es6",
     "outDir": "./pro",
-    "baseUrl": "./",
-    "incremental": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
   },
-  "include": ["./"],
-  "exclude": ["node_modules", "dist", "pro"]
+  "extends": "./tsconfig.base.json"
 }

@@ -1,5 +1,5 @@
 import cmd from 'node-cmd';
-import { spinner } from '../utils';
+import { spinner } from '@/utils';
 
 class BackupPackages {
   constructor(protected needVersion: boolean) {}
@@ -59,29 +59,25 @@ class BackupPackages {
       pList.push(this.getPackagesWithVersion());
     }
 
-    return Promise.all(pList)
-      .then(rList => {
-        let list: string[] = [];
-        if (rList.length === 2) {
-          const pkgNames = rList[0];
-          const pkgsWithV = rList[1];
+    return Promise.all(pList).then(rList => {
+      let list: string[] = [];
+      if (rList.length === 2) {
+        const pkgNames = rList[0];
+        const pkgsWithV = rList[1];
 
-          pkgNames.forEach((item, i) => {
-            const temp = pkgsWithV[i].split(item);
+        pkgNames.forEach((item, i) => {
+          const temp = pkgsWithV[i].split(item);
 
-            list.push(`${item}${temp[temp.length - 1]}`);
-          });
-        } else {
-          list = rList[0];
-        }
+          list.push(`${item}==${temp[temp.length - 1]}`);
+        });
+      } else {
+        list = rList[0];
+      }
 
-        spinner.stop();
+      spinner.stop();
 
-        return list;
-      })
-      .catch(e => {
-        return Promise.reject(e);
-      });
+      return list;
+    });
   }
 }
 

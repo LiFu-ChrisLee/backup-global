@@ -1,3 +1,4 @@
+import fs from 'fs';
 import ora from 'ora';
 import colors from 'colors';
 
@@ -25,29 +26,71 @@ class ConsoleSpinner {
 const spinner = new ConsoleSpinner();
 
 class SoloConsole {
-  protected wrap(cb?: Function, ...msg): void {
-    console.log();
+  protected wrap(cb): void {
+    console.info();
     if (cb) {
-      cb(...msg);
+      cb();
     }
-    console.log();
+    console.info();
   }
 
   log(...msg): void {
-    this.wrap(console.log, ...msg);
+    this.wrap(() => {
+      console.log(...msg);
+    });
+  }
+
+  success(...msg): void {
+    this.wrap(() => {
+      console.info(`${colors.bgGreen('success:')}`);
+      console.info(...msg);
+    });
   }
 
   error(...msg): void {
-    const list = [`${colors.bgRed('error:')}`];
-    if (msg) {
-      msg.forEach(text => {
-        list.push(colors.red(text));
-      });
-    }
-    this.wrap(console.error, ...list);
+    this.wrap(() => {
+      console.info(`${colors.bgRed('error:')}`);
+      console.error(...msg);
+    });
   }
 }
 
 const soloConsole = new SoloConsole();
 
-export { getUserDir, spinner, soloConsole };
+function wFile(filePath: string, text: string): Promise<void> {
+  spinner.start('Writing file ...');
+
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, text, wFileErr => {
+      if (wFileErr) {
+        spinner.fail();
+
+        reject(wFileErr);
+      } else {
+        spinner.stop();
+
+        resolve();
+      }
+    });
+  });
+}
+
+function rFile(filePath: string): Promise<string> {
+  spinner.start('Reading file ...');
+
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, (rFileErr, text) => {
+      if (rFileErr) {
+        spinner.fail();
+
+        reject(rFileErr);
+      } else {
+        spinner.stop();
+
+        resolve(text.toString());
+      }
+    });
+  });
+}
+
+export { getUserDir, spinner, soloConsole, wFile, rFile };
