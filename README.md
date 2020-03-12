@@ -41,6 +41,9 @@ Use ~/npm.global.txt to install your backup
 
 ## Change Logs
 
+### 1.2.0
+Support comments
+
 ### 1.1.0
 Add version control
 
