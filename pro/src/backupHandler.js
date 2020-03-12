@@ -13,7 +13,13 @@ function backupHandler(args) {
     bkp
         .getFullPackages()
         .then(pkgs => {
-        return utils_1.wFile(backupFile, pkgs.join('\n'));
+        const commentHeader = [
+            '# This is a comment, this line will be ignore.',
+            '# You can use # to comment a line manually.',
+            '',
+        ];
+        const textList = commentHeader.concat(pkgs);
+        return utils_1.wFile(backupFile, textList.join('\n'));
     })
         .then(() => {
         utils_1.soloConsole.success(`Backup file: ${colors_1.default.blue(backupFile)}`);

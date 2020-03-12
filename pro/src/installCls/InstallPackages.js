@@ -7,18 +7,25 @@ const node_cmd_1 = __importDefault(require("node-cmd"));
 const utils_1 = require("../utils");
 class InstallPackages {
     constructor(data, needVersion) {
-        this.data = data;
         this.needVersion = needVersion;
+        this.data = this.ignoreComments(data);
+    }
+    ignoreComments(data) {
+        return data.replace(/#[^\n]*/g, '');
     }
     getPackages() {
         const list = [];
         const packages = this.data.split('\n');
         packages.forEach(item => {
+            const temp = item.replace(/\s/g, '');
+            if (temp === '') {
+                return;
+            }
             if (this.needVersion) {
-                list.push(item.replace('==', ''));
+                list.push(temp.replace('==', ''));
             }
             else {
-                list.push(item.split('==')[0]);
+                list.push(temp.split('==')[0]);
             }
         });
         return list.join(' ');
