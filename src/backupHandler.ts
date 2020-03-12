@@ -11,7 +11,14 @@ function backupHandler(args: BackOptionsDto): void {
   bkp
     .getFullPackages()
     .then(pkgs => {
-      return wFile(backupFile, pkgs.join('\n'));
+      const commentHeader: string[] = [
+        '# This is a comment, this line will be ignore.',
+        '# You can use # to comment a line manually.',
+        '',
+      ];
+
+      const textList: string[] = commentHeader.concat(pkgs);
+      return wFile(backupFile, textList.join('\n'));
     })
     .then(() => {
       soloConsole.success(`Backup file: ${colors.blue(backupFile)}`);

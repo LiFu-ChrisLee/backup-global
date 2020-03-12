@@ -26,7 +26,7 @@ class ConsoleSpinner {
 const spinner = new ConsoleSpinner();
 
 class SoloConsole {
-  protected wrap(cb): void {
+  protected wrap(cb: Function): void {
     console.info();
     if (cb) {
       cb();

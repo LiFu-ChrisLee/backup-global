@@ -2,17 +2,31 @@ import cmd from 'node-cmd';
 import { spinner } from '@/utils';
 
 class InstallPackages {
-  constructor(protected data: string, protected needVersion: boolean) {}
+  protected data: string;
+
+  constructor(data: string, protected needVersion: boolean) {
+    this.data = this.ignoreComments(data);
+  }
+
+  ignoreComments(data: string): string {
+    return data.replace(/#[^\n]*/g, '');
+  }
 
   getPackages(): string {
     const list: string[] = [];
     const packages: string[] = this.data.split('\n');
 
     packages.forEach(item => {
+      const temp: string = item.replace(/\s/g, '');
+
+      if (temp === '') {
+        return;
+      }
+
       if (this.needVersion) {
-        list.push(item.replace('==', ''));
+        list.push(temp.replace('==', ''));
       } else {
-        list.push(item.split('==')[0]);
+        list.push(temp.split('==')[0]);
       }
     });
 
