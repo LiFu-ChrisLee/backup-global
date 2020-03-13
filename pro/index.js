@@ -9,6 +9,7 @@ const colors_1 = __importDefault(require("colors"));
 const utils_1 = require("./src/utils");
 const backupHandler_1 = require("./src/backupHandler");
 const installHandler_1 = require("./src/installHandler");
+const fileHandler_1 = require("./src/fileHandler");
 const package_json_1 = __importDefault(require("./package.json"));
 commander_1.default.version(package_json_1.default.version).name('backup-global|bkg');
 commander_1.default
@@ -28,6 +29,13 @@ commander_1.default
     .action(agrvs => {
     const options = { needVersion: agrvs.version };
     installHandler_1.installHandler(options);
+});
+commander_1.default
+    .command('file')
+    .alias('f')
+    .description('show your backup file path')
+    .action(() => {
+    fileHandler_1.fileHandler();
 });
 commander_1.default.parse(process.argv);
 if (!process.argv.slice(2).length) {

@@ -7,6 +7,7 @@ import colors from 'colors';
 import { soloConsole } from '@/utils';
 import { backupHandler } from '@/backupHandler';
 import { installHandler } from '@/installHandler';
+import { fileHandler } from '@/fileHandler';
 import { BackOptionsDto, InstallOptionsDto } from '@dto/Options.dto';
 import program from './package.json';
 
@@ -30,6 +31,14 @@ backCmd
   .action(agrvs => {
     const options: InstallOptionsDto = { needVersion: agrvs.version };
     installHandler(options);
+  });
+
+backCmd
+  .command('file')
+  .alias('f')
+  .description('show your backup file path')
+  .action(() => {
+    fileHandler();
   });
 
 backCmd.parse(process.argv);
