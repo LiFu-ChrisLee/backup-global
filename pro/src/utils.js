@@ -52,11 +52,17 @@ class SoloConsole {
             console.error(...msg);
         });
     }
+    warn(...msg) {
+        this.wrap(() => {
+            console.info(`${colors_1.default.bgYellow('warn:')}`);
+            console.warn(...msg);
+        });
+    }
 }
 const soloConsole = new SoloConsole();
 exports.soloConsole = soloConsole;
-function wFile(filePath, text) {
-    spinner.start('Writing file ...');
+function wFile(filePath, text, msg = 'Writing file ...') {
+    spinner.start(msg);
     return new Promise((resolve, reject) => {
         fs_1.default.writeFile(filePath, text, wFileErr => {
             if (wFileErr) {
@@ -71,8 +77,8 @@ function wFile(filePath, text) {
     });
 }
 exports.wFile = wFile;
-function rFile(filePath) {
-    spinner.start('Reading file ...');
+function rFile(filePath, msg = 'Reading file ...') {
+    spinner.start(msg);
     return new Promise((resolve, reject) => {
         fs_1.default.readFile(filePath, (rFileErr, text) => {
             if (rFileErr) {

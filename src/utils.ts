@@ -10,7 +10,7 @@ function getUserDir(): string {
 class ConsoleSpinner {
   private spinner = ora();
 
-  start(msg?: string): void {
+  start(msg: string): void {
     this.spinner.start(msg);
   }
 
@@ -53,12 +53,19 @@ class SoloConsole {
       console.error(...msg);
     });
   }
+
+  warn(...msg): void {
+    this.wrap(() => {
+      console.info(`${colors.bgYellow('warn:')}`);
+      console.warn(...msg);
+    });
+  }
 }
 
 const soloConsole = new SoloConsole();
 
-function wFile(filePath: string, text: string): Promise<void> {
-  spinner.start('Writing file ...');
+function wFile(filePath: string, text: string, msg = 'Writing file ...'): Promise<void> {
+  spinner.start(msg);
 
   return new Promise((resolve, reject) => {
     fs.writeFile(filePath, text, wFileErr => {
@@ -75,8 +82,8 @@ function wFile(filePath: string, text: string): Promise<void> {
   });
 }
 
-function rFile(filePath: string): Promise<string> {
-  spinner.start('Reading file ...');
+function rFile(filePath: string, msg = 'Reading file ...'): Promise<string> {
+  spinner.start(msg);
 
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, (rFileErr, text) => {

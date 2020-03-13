@@ -6,10 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const colors_1 = __importDefault(require("colors"));
 const utils_1 = require("./utils");
+const config_1 = require("./config");
 const BackupPackages_1 = require("./backupCls/BackupPackages");
 function backupHandler(args) {
     const bkp = new BackupPackages_1.BackupPackages(args.needVersion);
-    const backupFile = path_1.default.join(utils_1.getUserDir(), 'npm.global.txt');
+    const backupFile = path_1.default.join(utils_1.getUserDir(), config_1.DEFAULT_PKG_FILE_NAME);
     bkp
         .getFullPackages()
         .then(pkgs => {
@@ -20,6 +21,9 @@ function backupHandler(args) {
         ];
         const textList = commentHeader.concat(pkgs);
         return utils_1.wFile(backupFile, textList.join('\n'));
+    })
+        .then(() => {
+        return utils_1.wFile(config_1.DEFAULT_RECORD_FILE, backupFile, 'Recording ...');
     })
         .then(() => {
         utils_1.soloConsole.success(`Backup file: ${colors_1.default.blue(backupFile)}`);
