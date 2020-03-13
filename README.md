@@ -39,7 +39,24 @@ backup-global install
 
 Use ~/npm.global.txt to install your backup
 
+### file
+
+```bash
+bkg f
+```
+
+or
+
+```bash
+backup-global file
+```
+
+You can use this command to find your backup file
+
 ## Change Logs
+
+### 1.3.0
+Show backup file
 
 ### 1.2.0
 Support comments
