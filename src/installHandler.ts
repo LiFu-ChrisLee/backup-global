@@ -1,12 +1,11 @@
-import path from 'path';
 import colors from 'colors';
-import { getUserDir, rFile, soloConsole, wFile } from '@/utils';
-import { DEFAULT_PKG_FILE_NAME, DEFAULT_RECORD_FILE } from '@/config';
+import { rFile, soloConsole, wFile } from '@/utils';
+import { DEFAULT_RECORD_FILE } from '@/config';
 import { InstallOptionsDto } from '@dto/Options.dto';
 import { InstallPackages } from '@/installCls/InstallPackages';
 
 function installHandler(args: InstallOptionsDto): void {
-  const backupFile: string = path.join(getUserDir(), DEFAULT_PKG_FILE_NAME);
+  const backupFile: string = args.backupFile;
 
   rFile(backupFile)
     .then(text => {

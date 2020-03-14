@@ -1,13 +1,12 @@
-import path from 'path';
 import colors from 'colors';
-import { getUserDir, soloConsole, wFile } from '@/utils';
-import { DEFAULT_PKG_FILE_NAME, DEFAULT_RECORD_FILE } from '@/config';
+import { soloConsole, wFile } from '@/utils';
+import { DEFAULT_RECORD_FILE } from '@/config';
 import { BackOptionsDto } from '@dto/Options.dto';
 import { BackupPackages } from '@/backupCls/BackupPackages';
 
 function backupHandler(args: BackOptionsDto): void {
   const bkp = new BackupPackages(args.needVersion);
-  const backupFile: string = path.join(getUserDir(), DEFAULT_PKG_FILE_NAME);
+  const backupFile: string = args.backupFile;
 
   bkp
     .getFullPackages()

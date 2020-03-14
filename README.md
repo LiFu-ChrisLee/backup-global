@@ -1,5 +1,7 @@
 # backup-global
-[![npm](https://img.shields.io/npm/dt/backup-global.svg)]() [![npm](https://img.shields.io/npm/v/backup-global.svg)]() [![npm](https://img.shields.io/npm/l/backup-global.svg)]()
+[![npm](https://img.shields.io/npm/dt/backup-global.svg)]()
+[![npm](https://img.shields.io/npm/v/backup-global.svg)]()
+[![npm](https://img.shields.io/npm/l/backup-global.svg)]()
 
 Backup your global packages.
 
@@ -55,6 +57,41 @@ You can use this command to find your backup file
 
 ## Change Logs
 
+### 1.4.0
+Use custom backup file
+
+#### backup
+
+Default file is ~/npm.global.txt
+
+Use these command to use custom backup file
+
+```bash
+bkg b -o <filePath>
+```
+
+or
+
+```bash
+backup-global backup --output <filePath>
+```
+
+#### install
+
+Default file is ~/npm.global.txt
+
+Use these command to use custom backup file
+
+```bash
+bkg i -i <filePath>
+```
+
+or
+
+```bash
+backup-global install --input <filePath>
+```
+
 ### 1.3.0
 Show backup file
 
@@ -95,7 +132,6 @@ or
 ```bash
 backup-global install --no-version
 ```
-
 
 ## License
 
