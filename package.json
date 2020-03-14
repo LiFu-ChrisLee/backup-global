@@ -7,6 +7,7 @@
     "build": "ttsc",
     "start": "node pro/index.js",
     "dev:start": "node dist/index.js",
+    "add:patch": "npm version patch",
     "add:minor": "npm version minor",
     "add:major": "npm version major",
     "add:minor:pre": "npm version preminor",
