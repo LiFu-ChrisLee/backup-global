@@ -21,7 +21,7 @@ commander_1.default
     .option('-o, --output <filePath>', 'backup to custom file')
     .description('backup your global packages')
     .action(agrvs => {
-    let backupFile = config_1.DEFAULT_RECORD_FILE;
+    let backupFile = config_1.DEFAULT_PKG_FILE;
     if (agrvs.output) {
         backupFile = path_1.default.resolve(process.cwd(), agrvs.output);
     }
@@ -38,7 +38,7 @@ commander_1.default
     .option('-n, --no-version', 'install package with version')
     .option('-i, --input <filePath>', 'use custom backup file')
     .action(agrvs => {
-    let backupFile = config_1.DEFAULT_RECORD_FILE;
+    let backupFile = config_1.DEFAULT_PKG_FILE;
     if (agrvs.input) {
         backupFile = path_1.default.resolve(process.cwd(), agrvs.input);
     }
