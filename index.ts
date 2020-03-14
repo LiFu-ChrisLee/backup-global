@@ -10,7 +10,7 @@ import { backupHandler } from '@/backupHandler';
 import { installHandler } from '@/installHandler';
 import { fileHandler } from '@/fileHandler';
 import { BackOptionsDto, InstallOptionsDto } from '@dto/Options.dto';
-import { DEFAULT_RECORD_FILE } from '@/config';
+import { DEFAULT_PKG_FILE } from '@/config';
 
 import program from './package.json';
 
@@ -23,7 +23,7 @@ backCmd
   .option('-o, --output <filePath>', 'backup to custom file')
   .description('backup your global packages')
   .action(agrvs => {
-    let backupFile = DEFAULT_RECORD_FILE;
+    let backupFile = DEFAULT_PKG_FILE;
 
     if (agrvs.output) {
       backupFile = path.resolve(process.cwd(), agrvs.output);
@@ -44,7 +44,7 @@ backCmd
   .option('-n, --no-version', 'install package with version')
   .option('-i, --input <filePath>', 'use custom backup file')
   .action(agrvs => {
-    let backupFile = DEFAULT_RECORD_FILE;
+    let backupFile = DEFAULT_PKG_FILE;
 
     if (agrvs.input) {
       backupFile = path.resolve(process.cwd(), agrvs.input);
