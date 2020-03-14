@@ -1,16 +1,19 @@
 {
   "name": "backup-global",
-  "version": "1.3.1",
+  "version": "1.4.1",
   "description": "Backup your global packages.",
   "scripts": {
     "dev": "ttsc -p tsconfig.dev.json --w",
     "build": "ttsc",
     "start": "node pro/index.js",
     "dev:start": "node dist/index.js",
-    "release": "npm version minor && npm publish",
-    "release:pre": "npm version preminor && npm publish --tag test",
-    "release:major": "npm version major && npm publish",
-    "release:major:pre": "npm version premajor && npm publish --tag test"
+    "add:patch": "npm version patch",
+    "add:minor": "npm version minor",
+    "add:major": "npm version major",
+    "add:minor:pre": "npm version preminor",
+    "add:major:pre": "npm version premajor",
+    "release": "npm publish",
+    "release:pre": "npm publish --tag test"
   },
   "engines": {
     "node": ">= 8.9.0",
