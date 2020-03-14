@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import path from 'path';
 import backCmd from 'commander';
 
 import colors from 'colors';
@@ -9,6 +10,8 @@ import { backupHandler } from '@/backupHandler';
 import { installHandler } from '@/installHandler';
 import { fileHandler } from '@/fileHandler';
 import { BackOptionsDto, InstallOptionsDto } from '@dto/Options.dto';
+import { DEFAULT_RECORD_FILE } from '@/config';
+
 import program from './package.json';
 
 backCmd.version(program.version).name('backup-global|bkg');
@@ -16,10 +19,21 @@ backCmd.version(program.version).name('backup-global|bkg');
 backCmd
   .command('backup')
   .alias('b')
-  .option('-n --no-version', 'backup package with version')
+  .option('-n, --no-version', 'backup package with version')
+  .option('-o, --output <filePath>', 'backup to custom file')
   .description('backup your global packages')
   .action(agrvs => {
-    const options: BackOptionsDto = { needVersion: agrvs.version };
+    let backupFile = DEFAULT_RECORD_FILE;
+
+    if (agrvs.output) {
+      backupFile = path.resolve(process.cwd(), agrvs.output);
+    }
+
+    const options: BackOptionsDto = {
+      needVersion: agrvs.version,
+      backupFile,
+    };
+
     backupHandler(options);
   });
 
@@ -27,9 +41,20 @@ backCmd
   .command('install')
   .alias('i')
   .description('install your backup')
-  .option('-n --no-version', 'install package with version')
+  .option('-n, --no-version', 'install package with version')
+  .option('-i, --input <filePath>', 'use custom backup file')
   .action(agrvs => {
-    const options: InstallOptionsDto = { needVersion: agrvs.version };
+    let backupFile = DEFAULT_RECORD_FILE;
+
+    if (agrvs.input) {
+      backupFile = path.resolve(process.cwd(), agrvs.input);
+    }
+
+    const options: InstallOptionsDto = {
+      needVersion: agrvs.version,
+      backupFile,
+    };
+
     installHandler(options);
   });
 
