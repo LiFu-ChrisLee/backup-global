@@ -51,7 +51,7 @@ class BackupPackages {
   }
 
   getFullPackages(): Promise<string[]> {
-    spinner.start('Getting global packages ...');
+    spinner.start('Getting npm global packages ...');
 
     const pList: Promise<string[]>[] = [this.getPackageNames()];
 
@@ -81,4 +81,79 @@ class BackupPackages {
   }
 }
 
-export { BackupPackages };
+class BackupYarnPackages {
+  constructor(protected needVersion: boolean) {}
+
+  getPackageNames(): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      cmd.get('yarn global list', (err, cmdData: string, stderr) => {
+        if (cmdData) {
+          const pkgs: string[] = [];
+          const dataArr: string[] = cmdData.split('\n');
+
+          dataArr.forEach((item, i) => {
+            if (item.includes('info')) {
+              const pkg = dataArr[i + 1].replace(/[\s-]/g, '');
+
+              pkgs.push(pkg);
+            }
+          });
+
+          resolve(pkgs);
+        } else if (stderr) {
+          reject(stderr);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  getPackagesWithVersion(): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      cmd.get('yarn global list', (err, cmdData: string, stderr) => {
+        if (cmdData) {
+          const pkgs: string[] = [];
+          const dataArr: string[] = cmdData.split('\n');
+
+          dataArr.forEach((item, i) => {
+            if (item.includes('info')) {
+              const pkg = dataArr[i + 1].replace(/[\s-]/g, '');
+
+              const version = item
+                .match(/"[^"]*"/)[0]
+                .replace('"', '')
+                .replace(pkg, '');
+
+              pkgs.push(`${pkg}==${version}`);
+            }
+          });
+
+          resolve(pkgs);
+        } else if (stderr) {
+          reject(stderr);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  getFullPackages(): Promise<string[]> {
+    spinner.start('Getting yarn global packages ...');
+
+    let p = this.getPackageNames;
+
+    if (this.needVersion) {
+      p = this.getPackagesWithVersion;
+    }
+
+    return p().then(list => {
+      spinner.stop();
+
+      return list;
+    });
+  }
+}
+
+export { BackupPackages, BackupYarnPackages };

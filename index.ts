@@ -19,8 +19,9 @@ backCmd.version(program.version).name('backup-global|bkg');
 backCmd
   .command('backup')
   .alias('b')
-  .option('-n, --no-version', 'backup package with version')
+  .option('-n, --no-version', `backup package ${colors.red('without')} version`)
   .option('-o, --output <filePath>', 'backup to custom file')
+  .option('--no-yarn', `do ${colors.red('not')} backup yarn packages`)
   .description('backup your global packages')
   .action(agrvs => {
     let backupFile = DEFAULT_PKG_FILE;
@@ -32,6 +33,7 @@ backCmd
     const options: BackOptionsDto = {
       needVersion: agrvs.version,
       backupFile,
+      needYarn: agrvs.yarn,
     };
 
     backupHandler(options);
@@ -41,7 +43,7 @@ backCmd
   .command('install')
   .alias('i')
   .description('install your backup')
-  .option('-n, --no-version', 'install package with version')
+  .option('-n, --no-version', `install package ${colors.red('without')} version`)
   .option('-i, --input <filePath>', 'use custom backup file')
   .action(agrvs => {
     let backupFile = DEFAULT_PKG_FILE;

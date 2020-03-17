@@ -1,10 +1,24 @@
 import fs from 'fs';
+import childProcess from 'child_process';
 import ora from 'ora';
 import colors from 'colors';
 
 function getUserDir(): string {
   const dirEnv = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
   return process.env[dirEnv];
+}
+
+function hasYarn(): boolean {
+  let bl: boolean;
+
+  try {
+    childProcess.execSync('yarn --version', { stdio: 'ignore' });
+    bl = true;
+  } catch {
+    bl = false;
+  }
+
+  return bl;
 }
 
 class ConsoleSpinner {
@@ -100,4 +114,4 @@ function rFile(filePath: string, msg = 'Reading file ...'): Promise<string> {
   });
 }
 
-export { getUserDir, spinner, soloConsole, wFile, rFile };
+export { getUserDir, hasYarn, spinner, soloConsole, wFile, rFile };
