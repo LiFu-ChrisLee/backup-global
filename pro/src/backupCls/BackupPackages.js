@@ -54,7 +54,7 @@ class BackupPackages {
         });
     }
     getFullPackages() {
-        utils_1.spinner.start('Getting global packages ...');
+        utils_1.spinner.start('Getting npm global packages ...');
         const pList = [this.getPackageNames()];
         if (this.needVersion) {
             pList.push(this.getPackagesWithVersion());
@@ -78,3 +78,70 @@ class BackupPackages {
     }
 }
 exports.BackupPackages = BackupPackages;
+class BackupYarnPackages {
+    constructor(needVersion) {
+        this.needVersion = needVersion;
+    }
+    getPackageNames() {
+        return new Promise((resolve, reject) => {
+            node_cmd_1.default.get('yarn global list', (err, cmdData, stderr) => {
+                if (cmdData) {
+                    const pkgs = [];
+                    const dataArr = cmdData.split('\n');
+                    dataArr.forEach((item, i) => {
+                        if (item.includes('info')) {
+                            const pkg = dataArr[i + 1].replace(/[\s-]/g, '');
+                            pkgs.push(pkg);
+                        }
+                    });
+                    resolve(pkgs);
+                }
+                else if (stderr) {
+                    reject(stderr);
+                }
+                else {
+                    reject(err);
+                }
+            });
+        });
+    }
+    getPackagesWithVersion() {
+        return new Promise((resolve, reject) => {
+            node_cmd_1.default.get('yarn global list', (err, cmdData, stderr) => {
+                if (cmdData) {
+                    const pkgs = [];
+                    const dataArr = cmdData.split('\n');
+                    dataArr.forEach((item, i) => {
+                        if (item.includes('info')) {
+                            const pkg = dataArr[i + 1].replace(/[\s-]/g, '');
+                            const version = item
+                                .match(/"[^"]*"/)[0]
+                                .replace(/"/g, '')
+                                .replace(pkg, '');
+                            pkgs.push(`${pkg}==${version}`);
+                        }
+                    });
+                    resolve(pkgs);
+                }
+                else if (stderr) {
+                    reject(stderr);
+                }
+                else {
+                    reject(err);
+                }
+            });
+        });
+    }
+    getFullPackages() {
+        utils_1.spinner.start('Getting yarn global packages ...');
+        let p = this.getPackageNames;
+        if (this.needVersion) {
+            p = this.getPackagesWithVersion;
+        }
+        return p().then(list => {
+            utils_1.spinner.stop();
+            return list;
+        });
+    }
+}
+exports.BackupYarnPackages = BackupYarnPackages;

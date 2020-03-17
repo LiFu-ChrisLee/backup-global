@@ -9,3 +9,7 @@ const DEFAULT_PKG_FILE = path_1.default.join(utils_1.getUserDir(), 'npm.global.t
 exports.DEFAULT_PKG_FILE = DEFAULT_PKG_FILE;
 const DEFAULT_RECORD_FILE = path_1.default.join(__dirname, '.pathrc');
 exports.DEFAULT_RECORD_FILE = DEFAULT_RECORD_FILE;
+const HAS_YARN_ENV = utils_1.hasYarn();
+exports.HAS_YARN_ENV = HAS_YARN_ENV;
+const YARN_STATEMENT_HEADER = '[Yarn Global Packages]';
+exports.YARN_STATEMENT_HEADER = YARN_STATEMENT_HEADER;

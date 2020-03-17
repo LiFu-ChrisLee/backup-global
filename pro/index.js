@@ -17,8 +17,9 @@ commander_1.default.version(package_json_1.default.version).name('backup-global|
 commander_1.default
     .command('backup')
     .alias('b')
-    .option('-n, --no-version', 'backup package with version')
+    .option('-n, --no-version', `backup package ${colors_1.default.red('without')} version`)
     .option('-o, --output <filePath>', 'backup to custom file')
+    .option('--no-yarn', `do ${colors_1.default.red('not')} backup yarn packages`)
     .description('backup your global packages')
     .action(agrvs => {
     let backupFile = config_1.DEFAULT_PKG_FILE;
@@ -28,6 +29,7 @@ commander_1.default
     const options = {
         needVersion: agrvs.version,
         backupFile,
+        needYarn: agrvs.yarn,
     };
     backupHandler_1.backupHandler(options);
 });
@@ -35,8 +37,9 @@ commander_1.default
     .command('install')
     .alias('i')
     .description('install your backup')
-    .option('-n, --no-version', 'install package with version')
+    .option('-n, --no-version', `install package ${colors_1.default.red('without')} version`)
     .option('-i, --input <filePath>', 'use custom backup file')
+    .option('--no-yarn', `do ${colors_1.default.red('not')} install yarn packages`)
     .action(agrvs => {
     let backupFile = config_1.DEFAULT_PKG_FILE;
     if (agrvs.input) {
@@ -45,6 +48,7 @@ commander_1.default
     const options = {
         needVersion: agrvs.version,
         backupFile,
+        needYarn: agrvs.yarn,
     };
     installHandler_1.installHandler(options);
 });

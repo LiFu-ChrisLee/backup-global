@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
+const child_process_1 = __importDefault(require("child_process"));
 const ora_1 = __importDefault(require("ora"));
 const colors_1 = __importDefault(require("colors"));
 function getUserDir() {
@@ -11,6 +12,18 @@ function getUserDir() {
     return process.env[dirEnv];
 }
 exports.getUserDir = getUserDir;
+function hasYarn() {
+    let bl;
+    try {
+        child_process_1.default.execSync('yarn --version', { stdio: 'ignore' });
+        bl = true;
+    }
+    catch (_a) {
+        bl = false;
+    }
+    return bl;
+}
+exports.hasYarn = hasYarn;
 class ConsoleSpinner {
     constructor() {
         this.spinner = ora_1.default();

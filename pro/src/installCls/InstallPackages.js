@@ -5,10 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_cmd_1 = __importDefault(require("node-cmd"));
 const utils_1 = require("../utils");
+const config_1 = require("../config");
 class InstallPackages {
     constructor(data, needVersion) {
         this.needVersion = needVersion;
-        this.data = this.ignoreComments(data);
+        data = this.ignoreComments(data);
+        this.data = this.ignoreYarnPkgs(data);
+    }
+    ignoreYarnPkgs(data) {
+        return data.split(config_1.YARN_STATEMENT_HEADER)[0];
     }
     ignoreComments(data) {
         return data.replace(/#[^\n]*/g, '');
@@ -31,7 +36,7 @@ class InstallPackages {
         return list.join(' ');
     }
     installFullPackages() {
-        utils_1.spinner.start('Installing packages ...');
+        utils_1.spinner.start('Installing npm packages ...');
         const list = this.getPackages();
         return new Promise((resolve, reject) => {
             node_cmd_1.default.get(`npm install --global ${list}`, (err, cmdData, stderr) => {
@@ -52,3 +57,55 @@ class InstallPackages {
     }
 }
 exports.InstallPackages = InstallPackages;
+class InstallYarnPackages {
+    constructor(data, needVersion) {
+        this.needVersion = needVersion;
+        data = this.ignoreComments(data);
+        this.data = this.ignoreNpmPkgs(data);
+    }
+    ignoreNpmPkgs(data) {
+        const tempArr = data.split(config_1.YARN_STATEMENT_HEADER);
+        return tempArr.length > 1 ? tempArr[1] : '';
+    }
+    ignoreComments(data) {
+        return data.replace(/#[^\n]*/g, '');
+    }
+    getPackages() {
+        const list = [];
+        const packages = this.data.split('\n');
+        packages.forEach(item => {
+            const temp = item.replace(/\s/g, '');
+            if (temp === '') {
+                return;
+            }
+            if (this.needVersion) {
+                list.push(temp.replace('==', ''));
+            }
+            else {
+                list.push(temp.split('==')[0]);
+            }
+        });
+        return list.join(' ');
+    }
+    installFullPackages() {
+        utils_1.spinner.start('Installing yarn packages ...');
+        const list = this.getPackages();
+        return new Promise((resolve, reject) => {
+            node_cmd_1.default.get(`yarn global add ${list}`, (err, cmdData, stderr) => {
+                if (cmdData) {
+                    utils_1.spinner.stop();
+                    resolve(cmdData);
+                }
+                else if (stderr) {
+                    utils_1.spinner.fail();
+                    reject(stderr);
+                }
+                else {
+                    utils_1.spinner.fail();
+                    reject(err);
+                }
+            });
+        });
+    }
+}
+exports.InstallYarnPackages = InstallYarnPackages;
