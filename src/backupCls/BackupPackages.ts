@@ -122,7 +122,7 @@ class BackupYarnPackages {
 
               const version = item
                 .match(/"[^"]*"/)[0]
-                .replace('"', '')
+                .replace(/"/g, '')
                 .replace(pkg, '');
 
               pkgs.push(`${pkg}==${version}`);

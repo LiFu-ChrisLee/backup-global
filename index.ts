@@ -45,6 +45,7 @@ backCmd
   .description('install your backup')
   .option('-n, --no-version', `install package ${colors.red('without')} version`)
   .option('-i, --input <filePath>', 'use custom backup file')
+  .option('--no-yarn', `do ${colors.red('not')} install yarn packages`)
   .action(agrvs => {
     let backupFile = DEFAULT_PKG_FILE;
 
@@ -55,6 +56,7 @@ backCmd
     const options: InstallOptionsDto = {
       needVersion: agrvs.version,
       backupFile,
+      needYarn: agrvs.yarn,
     };
 
     installHandler(options);
